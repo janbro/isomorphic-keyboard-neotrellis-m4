@@ -1,4 +1,4 @@
-# Isomorphic Neotrellis Keyboard
+# Isomorphic NeoTrellis Keyboard
 
 This keyboard was created to support isomorphic keyboard type on the NeoTrellis M4. Isomorphic keyboard is a two dimensional grid layout on which any given sequence and/or combination of musical intervals has the "same shape" on the keyboard wherever it occurs [[1]](https://en.wikipedia.org/wiki/Isomorphic_keyboard).
 This gives the advantage of different types of chords (major, minor, diminished) having the same shape across the keyboard.
