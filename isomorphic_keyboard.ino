@@ -27,10 +27,11 @@ Adafruit_NeoTrellisM4 trellis = Adafruit_NeoTrellisM4();
   4  C
   3 *C C# D D# E F F# G G# A A# B
   2  C C# D D# E F F# G G# A A# B */
-int isomorphic_map[] = {FIRST_MIDI_NOTE + 5, FIRST_MIDI_NOTE + 6, FIRST_MIDI_NOTE + 7, FIRST_MIDI_NOTE + 8, FIRST_MIDI_NOTE + 9, FIRST_MIDI_NOTE + 10, FIRST_MIDI_NOTE + 11, FIRST_MIDI_NOTE + 12,
-                        FIRST_MIDI_NOTE, FIRST_MIDI_NOTE + 1, FIRST_MIDI_NOTE + 2, FIRST_MIDI_NOTE + 3, FIRST_MIDI_NOTE + 4, FIRST_MIDI_NOTE + 5, FIRST_MIDI_NOTE + 6, FIRST_MIDI_NOTE + 7,
-                        FIRST_MIDI_NOTE - 5,FIRST_MIDI_NOTE - 4, FIRST_MIDI_NOTE - 3, FIRST_MIDI_NOTE - 2, FIRST_MIDI_NOTE - 1, FIRST_MIDI_NOTE, FIRST_MIDI_NOTE + 1, FIRST_MIDI_NOTE + 2,
-                        FIRST_MIDI_NOTE - 10,FIRST_MIDI_NOTE - 9, FIRST_MIDI_NOTE - 8, FIRST_MIDI_NOTE - 7, FIRST_MIDI_NOTE - 6, FIRST_MIDI_NOTE - 5, FIRST_MIDI_NOTE - 4, FIRST_MIDI_NOTE - 3};
+int *isomorphic_map;
+
+// Only need one of these
+int NUM_COLS = 8;
+int NUM_ROWS;
 
 void setup(){
   Serial.begin(115200);
@@ -48,6 +49,16 @@ void setup(){
   Serial.println("Enabling MIDI on UART");
   trellis.enableUARTMIDI(true);
   trellis.setUARTMIDIchannel(MIDI_CHANNEL);
+
+  NUM_ROWS = trellis.num_keys() / NUM_COLS;
+  isomorphic_map = (int *)malloc(sizeof(int)*trellis.num_keys());
+  
+  // Generate isomorphic map
+  for(int row=0; row < NUM_ROWS; row++) {
+    for(int col=0; col < NUM_COLS; col++) {
+      isomorphic_map[col + NUM_COLS*row] = FIRST_MIDI_NOTE + (5 + -5*row) + col;
+    }
+  }
   
   if(!accel.begin()) {
     Serial.println("No accelerometer found");
